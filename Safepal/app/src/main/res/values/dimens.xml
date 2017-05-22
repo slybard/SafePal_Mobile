@@ -14,11 +14,17 @@
     <dimen name="overall_et_margin_bottom">17dp</dimen>
     <dimen name="cardview_corner_radius">5dp</dimen>
     <dimen name="cardview_margin">5dp</dimen>
+    <dimen name="cardview_margin_x2">15dp</dimen>
 
     <dimen name="cso_name">17dp</dimen>
     <dimen name="cso_distance">15dip</dimen>
     <dimen name="subtitle_margin_bottom">10dp</dimen>
     <dimen name="intro_text_margin_top">10dp</dimen>
     <dimen name="cards_elevation">15dp</dimen>
+    <dimen name="text_margin">20dp</dimen>
+    <dimen name="cardview_hint_side_margin">10dp</dimen>
+    <dimen name="hint_width">250dp</dimen>
+    <dimen name="hint_height">250dp</dimen>
+    <dimen name="land_content_side_margin">20dp</dimen>
 
 </resources>

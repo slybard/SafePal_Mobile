@@ -88,13 +88,11 @@ public class AnotherPersonIncidentFormFragment extends Fragment {
 
 
     
-    
-    // TODO: Rename parameter arguments, choose names that match
+
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_RELATIONSHIP_TO_SURVIVOR = "";
     private static final String ARG_PARAM2 = "";
 
-    // TODO: Rename and change types of parameters
     private static String relationshipToSurvivor;
     private String mParam2;
 
@@ -112,7 +110,6 @@ public class AnotherPersonIncidentFormFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment AnotherPersonIncidentFormFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static AnotherPersonIncidentFormFragment newInstance(String relationshipToSurvivor, String param2) {
         AnotherPersonIncidentFormFragment fragment = new AnotherPersonIncidentFormFragment();
         Bundle args = new Bundle();
@@ -240,8 +237,7 @@ return rootView;
             Log.e(TAG, "could not unregister receiver");
         }
     }
-    
-    // TODO: Rename method, update argument and hook method into UI event
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -381,7 +377,7 @@ return rootView;
 //            context.startActivity(intent);
             return ReportingActivity.STATUS_SUBMIT_REPORT_SUBMITED;
         }
-        //updates the report if its already available // TODO: 13-Nov-16 look 4 try catches... is this difference okay
+        //updates the report if its already available
         else {
             Log.e(TAG, "is this normal???");
             Log.e(TAG, "The  case was not submitted");
@@ -404,7 +400,6 @@ return rootView;
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 

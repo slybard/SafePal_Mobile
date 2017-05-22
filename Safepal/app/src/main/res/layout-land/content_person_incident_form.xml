@@ -18,7 +18,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-
+        android:layout_marginLeft="@dimen/land_content_side_margin"
+        android:layout_marginStart="@dimen/land_content_side_margin"
+        android:layout_marginRight="@dimen/land_content_side_margin"
+        android:layout_marginEnd="@dimen/land_content_side_margin"
         >
 
 

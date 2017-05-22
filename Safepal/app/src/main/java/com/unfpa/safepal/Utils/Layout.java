@@ -1,6 +1,8 @@
 package com.unfpa.safepal.Utils;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -10,6 +12,9 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.view.Display;
+import android.view.Surface;
+import android.view.WindowManager;
 
 /**
  * Created by Brian on 10-Nov-16.
@@ -73,4 +78,9 @@ public class Layout {
         return bitmap;
     }
 
+    public static boolean isLandscape(Context context){
+        Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        int orientation = display.getRotation();
+        return orientation == Surface.ROTATION_90 || orientation == Surface.ROTATION_270;
+    }
 }

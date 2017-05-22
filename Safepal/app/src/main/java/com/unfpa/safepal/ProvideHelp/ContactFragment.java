@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.unfpa.safepal.Location.TrackGPS;
 import com.unfpa.safepal.R;
+import com.unfpa.safepal.Utils.Layout;
 import com.unfpa.safepal.messages.EMessageDialogFragment;
 import com.unfpa.safepal.store.RIContentObserver;
 import com.unfpa.safepal.store.ReportIncidentContentProvider;
@@ -143,14 +144,32 @@ public class ContactFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {//user selcted contact me
+
+                    if(!Layout.isLandscape(getActivity().getBaseContext())){
+                        //            hide the encoraging message to create space
+                        contactEncouragingMessagesTv.setVisibility(View.INVISIBLE);
+                    }
+
+
+
                     //shows phone number and email
                     contactPhoneEmailLl.setVisibility(View.VISIBLE);
                 } else {//user doesnt want to be contacted
+
                     //hides phonenumber and email on UI
                     contactPhoneEmailLl.setVisibility(View.GONE);
 
+                    //            hide the encoraging message to create space
+                    if(!Layout.isLandscape(getActivity().getBaseContext())){
+                        contactEncouragingMessagesTv.setVisibility(View.VISIBLE);
+                    }
+
+
+
+
                 }
             }
+
         });
 
         contactEncouragingMessagesTv.setOnClickListener(new View.OnClickListener() {

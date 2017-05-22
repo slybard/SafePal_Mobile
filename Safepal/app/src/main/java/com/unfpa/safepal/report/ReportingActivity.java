@@ -44,7 +44,6 @@ ContactFragment.OnFragmentInteractionListener, AnotherPersonIncidentFormFragment
 
         loadWhoGetnHelpFragment();
 
-
     }
 
     @Override

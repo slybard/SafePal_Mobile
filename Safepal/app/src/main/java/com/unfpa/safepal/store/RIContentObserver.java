@@ -17,13 +17,11 @@ public class RIContentObserver extends ContentObserver {
 
     public RIContentObserver(Context c, Handler handler) {
         super(handler);
-        // TODO Auto-generated constructor stub
         this.context = c;
         this.handler = handler;
     }
     @Override
     public void onChange(boolean selfChange) {
-        // TODO Auto-generated method stub
         super.onChange(selfChange);
 
 

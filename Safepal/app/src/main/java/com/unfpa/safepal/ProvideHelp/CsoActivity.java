@@ -44,6 +44,7 @@ import com.unfpa.safepal.store.ReportIncidentTable;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -65,6 +66,7 @@ public class CsoActivity extends AppCompatActivity {
     Button buttonExit;
 
     TextView csoSafepalNo, csoContactInfo,csoAssuranceHelp, csoEncouragingMessagesTV;
+    TextView recyclerViewHeading;//heading for closet help listview
 
     //variables for the nearest cso list
     private List<TheCSO> csosList = new ArrayList<>();
@@ -95,7 +97,7 @@ public class CsoActivity extends AppCompatActivity {
         csoSafepalNo = (TextView)findViewById(R.id.cso_safepal_number);
         csoContactInfo= (TextView)findViewById(R.id.cso_contact_info);
         csoAssuranceHelp = (TextView)findViewById(R.id.cso_assurance_help);
-
+        recyclerViewHeading = (TextView)findViewById(R.id.heading_closed_help);
         Toolbar csoToolbar = (Toolbar) findViewById(R.id.cso_toolbar);
         setSupportActionBar(csoToolbar);
 
@@ -109,6 +111,7 @@ public class CsoActivity extends AppCompatActivity {
         csosRecyclerView = (RecyclerView) findViewById(R.id.cso_recycler_view);
 
         csosAdapter = new CsoRvAdapter(csosList);
+        toggleRecyclerViewVisibility();
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         csosRecyclerView.setLayoutManager(mLayoutManager);
         csosRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -197,6 +200,7 @@ public class CsoActivity extends AppCompatActivity {
                 }
 
                 csosAdapter.notifyDataSetChanged();
+                toggleRecyclerViewVisibility();
             }
         });
     }
@@ -266,7 +270,7 @@ public class CsoActivity extends AppCompatActivity {
         if(cursor != null) {
             StringBuilder offline = new StringBuilder();
             cursor.moveToLast();
-            offline.append("Your SafePal Number is: " + cursor.getString(cursor.getColumnIndex(ReportIncidentTable.COLUMN_UNIQUE_IDENTIFIER)));
+            offline.append(cursor.getString(cursor.getColumnIndex(ReportIncidentTable.COLUMN_UNIQUE_IDENTIFIER)));
 
 
             csoSafepalNo.setText(offline);
@@ -315,15 +319,15 @@ public class CsoActivity extends AppCompatActivity {
             String email =  cursorRetrieveLatLng.getString(cursorRetrieveLatLng.getColumnIndex(ReportIncidentTable.COLUMN_REPORTER_EMAIL));
 
             if(phone.length()>8){
-                csoContactInfo.setText("Contact Phonenumber: " + phone);
-                csoAssuranceHelp.setText("Safepal will contact you on the above phonenumber.");
+                csoContactInfo.setText(phone);
+                csoAssuranceHelp.setText(getString(R.string.will_contact_on_phone));
                 if(email.length()>8){
-                    csoContactInfo.setText("Contact Phonenumber: " + phone+ "\nContact Email: " +email);
-                    csoAssuranceHelp.setText("Safepal will contact you on the above phonenumber or email. "); }
+                    csoContactInfo.setText(phone+ ", " +email);
+                    csoAssuranceHelp.setText(getString(R.string.will_contact_on_phone_n_email)); }
             }
             else {
-                csoContactInfo.setText("No Contacts provided. " );
-                csoAssuranceHelp.setText("Since you did not provide a contact number, safepal service providers will not be able to contact you directly. But you can still walk in to any of the service providers below with your safepal number and they will attend to you. ");
+                csoContactInfo.setText("-" );
+                csoAssuranceHelp.setText(getString(R.string.no_contacts_input));
 
             }
 
@@ -334,6 +338,22 @@ public class CsoActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * there is no need to tell the user that:
+     * "Below is the closes help to you" yet there is actually no help available.
+     * i.e when no results are got.
+     * This method hides the recycler view and its heading if there are no results to show
+     * and it shows them when there are results
+     */
+    void toggleRecyclerViewVisibility(){
+        if(csosAdapter.getItemCount() <= 0){//no items
+            csosRecyclerView.setVisibility(View.GONE);
+            recyclerViewHeading.setVisibility(View.GONE);
+        }else{//there are some items
+            csosRecyclerView.setVisibility(View.VISIBLE);
+            recyclerViewHeading.setVisibility(View.VISIBLE);
+        }
+    }
 
 
 }

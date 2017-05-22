@@ -11,65 +11,72 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".report.AnotherPersonIncidentFormActivity"
-    tools:showIn="@layout/activity_another_person_incident_form">
+    tools:context=".report.AnotherPersonIncidentFormFragment"
+    android:background="@color/colorWhite"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-
+        android:layout_marginLeft="@dimen/land_content_side_margin"
+        android:layout_marginStart="@dimen/land_content_side_margin"
+        android:layout_marginRight="@dimen/land_content_side_margin"
+        android:layout_marginEnd="@dimen/land_content_side_margin"
         >
 
 
         <TextView
-            android:id="@+id/ecouraging_messages_tv"
+            android:id="@+id/apif_encouraging_messages_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
+            android:layout_marginTop="@dimen/intro_text_margin_top"
             android:ellipsize="end"
             android:maxLines="3"
-            android:onClick="onClickEncouragingMessages"
-            android:text="@string/wsgh_msgs_to_ecourage_survivor" />
 
-        <!--<include layout="@layout/divider" />-->
+            android:layout_gravity="center_vertical|right"
+            android:text="@string/wsgh_msgs_to_ecourage_survivor"
+            android:textStyle="bold"
+            />
+
+        <include layout="@layout/divider" />
 
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_marginTop="20dp"
-            android:id="@+id/image_spinner_what_happed"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:src="@mipmap/ic_action_help" />
+            <ImageView
+                android:id="@+id/image_spinner_what_happed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:src="@mipmap/ic_action_help"
+                android:layout_alignBottom="@+id/wsgh_spinner_rl"
+                android:layout_alignTop="@+id/wsgh_spinner_rl" />
 
-        <RelativeLayout
-            android:layout_marginTop="20dp"
-            android:id="@+id/wsgh_spinner_rl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/spinner_bg"
-            android:layout_toEndOf="@id/image_spinner_what_happed"
-            android:layout_toRightOf="@id/image_spinner_what_happed">
-            <Spinner
-                android:id="@+id/incident_type_spinner"
+            <RelativeLayout
+                android:layout_marginTop="20dp"
+                android:id="@+id/wsgh_spinner_rl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginStart="5dp"
-                android:gravity="center"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:spinnerMode="dropdown"
-                style="@style/coolSpinnerNormal"
+                android:background="@drawable/spinner_bg"
+                android:layout_toEndOf="@id/image_spinner_what_happed"
+                android:layout_toRightOf="@id/image_spinner_what_happed">
+                <Spinner
+                    android:id="@+id/incident_type_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:spinnerMode="dropdown"
+                    style="@style/coolSpinnerNormal"
 
-                />
+                    />
             </RelativeLayout>
 
         </RelativeLayout>
@@ -109,7 +116,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/incident_location"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:maxLength="25"/>
                 </android.support.design.widget.TextInputLayout>
             </RelativeLayout>
 
@@ -141,7 +149,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/incident_details"
-                        android:inputType="text|textMultiLine" />
+                        android:inputType="text|textMultiLine"
+                        android:maxLines="3"/>
                 </android.support.design.widget.TextInputLayout>
             </RelativeLayout>
 
@@ -179,7 +188,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/subtitle_margin_bottom"
-                    android:text="@string/gender"
+                    android:text="@string/apif_survivor_gender"
                     android:textColor="@color/colorAccent"
                     android:textStyle="bold"
                     />
@@ -221,88 +230,116 @@
             android:layout_height="match_parent"
             android:layout_marginTop="20dp">
 
-        <ImageView
-            android:id="@+id/image_age"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:src="@mipmap/ic_action_go_to_today" />
-
-        <LinearLayout
-
-            android:id="@+id/age_linear_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="10dp"
-            android:layout_toEndOf="@id/image_age"
-            android:layout_toRightOf="@id/image_age"
-
-            >
-
-            <TextView
-                android:id="@+id/age_tv"
-                android:layout_width="350dp"
-                android:layout_height="wrap_content"
-                android:text="@string/survivor_age"
-                android:textColor="@color/colorAccent"
-                android:textStyle="bold"
-                />
-
-            <!--afer choosing aa date, chosem date will appear here-->
-            <TextView
-                android:id="@+id/chosen_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                android:visibility="gone" />
-
-            <Button
-                android:layout_marginTop="10dp"
-                android:id="@+id/date_of_birth_button"
-                style="@style/materialButtonNormal"
+            <ImageView
+                android:id="@+id/image_age"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="showDatePickerDialog"
-                android:text="@string/sif_survivor_pick_age"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:src="@mipmap/ic_action_go_to_today"
+                android:layout_alignTop="@+id/date_of_birth_spinner_container"
+                android:layout_alignBottom="@+id/date_of_birth_spinner_container" />
 
-                />
+            <!--<LinearLayout-->
+
+                <!--android:id="@+id/age_linear_layout"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="vertical"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:layout_toEndOf="@id/image_age"-->
+                <!--android:layout_toRightOf="@id/image_age"-->
+
+                >
+
+                <!--<TextView-->
+                    <!--android:id="@+id/age_tv"-->
+                    <!--android:layout_width="350dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="@string/survivor_age"-->
+                    <!--android:textColor="@color/colorAccent"-->
+                    <!--android:textStyle="bold"-->
+                    <!--/>-->
+
+                <!--&lt;!&ndash;afer choosing aa date, chosem date will appear here&ndash;&gt;-->
+                <!--<TextView-->
+                    <!--android:id="@+id/chosen_date"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text=""-->
+                    <!--android:textColor="@color/colorPrimary"-->
+                    <!--android:textStyle="bold"-->
+                    <!--android:visibility="gone" />-->
+
+                <!--<Button-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:id="@+id/date_of_birth_button"-->
+                    <!--style="@style/coolButtonNormal"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="@string/sif_survivor_pick_age"-->
+
+                    <!--/>-->
+
+                <RelativeLayout
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/date_of_birth_spinner_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/spinner_bg"
+                    android:text="@string/sif_survivor_pick_age"
+
+                    android:orientation="vertical"
+                    android:layout_toEndOf="@id/image_age"
+                    android:layout_toRightOf="@id/image_age"
+                    >
+                    <Spinner
+                        android:id="@+id/age_range_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginStart="5dp"
+                        android:gravity="center"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:spinnerMode="dropdown"
+                        style="@style/coolSpinnerNormal"
+
+                        />
+                </RelativeLayout>
 
 
-        </LinearLayout>
+
+            <!--</LinearLayout>-->
         </RelativeLayout>
 
-        <include layout="@layout/divider" />
+        <!--<include layout="@layout/divider" />-->
 
         <!--The footer that conststs of two buttons-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="20dp"-->
+            <!--android:orientation="horizontal">-->
 
-            <Button
-                android:id="@+id/exit_app"
-                style="@style/materialButtonAttention"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/exitApp" />
+            <!--<Button-->
+                <!--android:id="@+id/exit_app"-->
+                <!--style="@style/coolButtonAttention"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:text="@string/exitApp" />-->
 
-            <Button
-                android:id="@+id/finish"
-                style="@style/materialButtonNormal"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="onClickSubmitIncident"
-                android:text="@string/submit" />
+            <!--<Button-->
+                <!--android:id="@+id/finish"-->
+                <!--style="@style/coolButtonNormal"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:onClick="onClickSubmitIncident"-->
+                <!--android:text="@string/submit" />-->
 
-        </LinearLayout>
+        <!--</LinearLayout>-->
         <!--end of The footer that conststs of two buttons-->
 
     </LinearLayout>

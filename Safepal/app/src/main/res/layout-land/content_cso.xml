@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/content_cso"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="horizontal"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -13,11 +13,12 @@
     tools:context="com.unfpa.safepal.ProvideHelp.CsoActivity"
     tools:showIn="@layout/activity_cso">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_weight="1">
 
         <android.support.v7.widget.CardView
             android:id="@+id/hint_container"
@@ -25,24 +26,19 @@
             android:layout_height="wrap_content"
             app:cardBackgroundColor="#008077"
             app:cardCornerRadius="6dp"
-            app:cardElevation="0dp"
+            app:cardElevation="0dp">
+            <android.support.v4.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            >
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-                <!--<TextView-->
-                <!--android:text="@string/intro_card_message"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:id="@+id/textView_hint"-->
-                <!--android:layout_margin="@dimen/text_margin"-->
-                <!--android:textColor="@color/colorWhite"-->
-                <!--android:layout_alignParentTop="true"-->
-                <!--android:lines="3"-->
-                <!--/>-->
 
                 <TextView
 
@@ -84,8 +80,7 @@
                     android:layout_marginLeft="@dimen/text_margin"
                     android:layout_marginStart="@dimen/text_margin"
                     android:layout_marginTop="@dimen/text_margin"
-                    android:orientation="vertical"
-                    >
+                    android:orientation="vertical">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -121,7 +116,7 @@
                     <TextView
                         android:id="@+id/cso_assurance_help"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_below="@+id/cso_contact_info"
                         android:layout_marginBottom="14dp"
                         android:ellipsize="end"
@@ -131,7 +126,6 @@
                 </LinearLayout>
 
                 <Button
-                    android:layout_below="@+id/container2"
                     android:id="@+id/cso_near_help"
                     style="@style/NiceButton"
                     android:layout_width="match_parent"
@@ -142,11 +136,10 @@
                     android:layout_marginRight="@dimen/text_margin"
                     android:layout_marginStart="@dimen/text_margin"
                     android:layout_marginTop="14dp"
-                    android:maxLines="1"
                     android:onClick="onClickCsoCall"
                     android:text="Call Toll Free"
                     android:textStyle="bold"
-
+                    android:layout_below="@+id/container2"
                     />
 
 
@@ -159,118 +152,136 @@
                 <!--android:alpha="0.7"-->
                 <!--android:visibility="invisible"/>-->
             </RelativeLayout>
+                </LinearLayout>
+
+
+            </android.support.v4.widget.NestedScrollView>
+
         </android.support.v7.widget.CardView>
 
+    </RelativeLayout>
 
-        <!--<include layout="@layout/divider" />-->
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!--<TextView-->
-
-        <!--android:id="@+id/cso_safepal_number"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@+id/cso_horizotal_line"-->
-        <!--android:textStyle="bold|italic"-->
-        <!--android:text="Your Safepal Number: "-->
-        <!--android:textColor="@color/colorAccent"-->
-        <!--android:layout_marginTop="20dp"-->
-        <!--/>-->
-        <!--<TextView-->
-        <!--android:id="@+id/cso_contact_info"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@+id/cso_safepal_number"-->
-        <!--android:textStyle="bold"-->
-        <!--android:textColor="@color/colorGreyDarker"-->
-        <!--android:text="You have no contacts "-->
-        <!--android:layout_marginTop="10dp"-->
-        <!--/>-->
-        <!--<TextView-->
-        <!--android:id="@+id/cso_assurance_help"-->
-        <!--android:layout_marginBottom="14dp"-->
-        <!--android:layout_marginTop="14dp"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@+id/cso_contact_info"-->
-        <!--android:text="The available help will contact you using above info."/>-->
-
-
-        <!--android:textColor="#000000"
-        android:gravity="center"
-        -->
-        <TextView
-            android:id="@+id/heading_closed_help"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/text_margin"
-            android:maxLines="1"
-            android:text="@string/below_is_help"
-            android:textSize="18dp"
-            android:textStyle="bold" />
-
-        <!--<include layout="@layout/divider" />-->
-
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/cso_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="14dp"
-                android:layout_marginTop="5dp"
-                android:scrollbars="vertical" />
-
-            <ProgressBar
-                android:id="@+id/cso_progress_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginBottom="14dp"
-                android:layout_marginTop="14dp" />
-        </RelativeLayout>
-
-
-        <TextView
-            android:id="@+id/cso_ecouraging_messages_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/text_margin"
-            android:background="@color/colorAccent"
-            android:ellipsize="end"
-            android:onClick="onClickCsoEncouragingMessages"
-            android:padding="10dp"
-            android:text="@string/wsgh_msgs_to_ecourage_survivor"
-            android:textColor="@color/colorWhite" />
-
-
-        <!--</RelativeLayout>-->
-        <!--<include layout="@layout/footer_buttons" />-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/exit_app"
-                style="@style/materialButtonAttention"
-                android:layout_width="0dp"
+
+            <!--<include layout="@layout/divider" />-->
+
+            <!--<TextView-->
+
+            <!--android:id="@+id/cso_safepal_number"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/cso_horizotal_line"-->
+            <!--android:textStyle="bold|italic"-->
+            <!--android:text="Your Safepal Number: "-->
+            <!--android:textColor="@color/colorAccent"-->
+            <!--android:layout_marginTop="20dp"-->
+            <!--/>-->
+            <!--<TextView-->
+            <!--android:id="@+id/cso_contact_info"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/cso_safepal_number"-->
+            <!--android:textStyle="bold"-->
+            <!--android:textColor="@color/colorGreyDarker"-->
+            <!--android:text="You have no contacts "-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--/>-->
+            <!--<TextView-->
+            <!--android:id="@+id/cso_assurance_help"-->
+            <!--android:layout_marginBottom="14dp"-->
+            <!--android:layout_marginTop="14dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/cso_contact_info"-->
+            <!--android:text="The available help will contact you using above info."/>-->
+
+
+            <!--android:textColor="#000000"
+            android:gravity="center"
+            -->
+            <TextView
+                android:id="@+id/heading_closed_help"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/exitApp" />
+                android:layout_marginTop="@dimen/text_margin"
+                android:maxLines="1"
+                android:text="@string/below_is_help"
+                android:textSize="18dp"
+                android:textStyle="bold" />
 
-            <Button
+            <!--<include layout="@layout/divider" />-->
 
-                android:id="@+id/finish"
-                style="@style/materialButtonNormal"
-                android:layout_width="0dp"
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/cso_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="14dp"
+                    android:layout_marginTop="5dp"
+                    android:scrollbars="vertical" />
+
+                <ProgressBar
+                    android:id="@+id/cso_progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginBottom="14dp"
+                    android:layout_marginTop="14dp" />
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/cso_ecouraging_messages_tv"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/home" />
+                android:layout_marginTop="@dimen/text_margin"
+                android:background="@color/colorAccent"
+                android:ellipsize="end"
+                android:onClick="onClickCsoEncouragingMessages"
+                android:padding="10dp"
+                android:text="@string/wsgh_msgs_to_ecourage_survivor"
+                android:textColor="@color/colorWhite" />
 
+
+            <!--</RelativeLayout>-->
+            <!--<include layout="@layout/footer_buttons" />-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/exit_app"
+                    style="@style/materialButtonAttention"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/exitApp" />
+
+                <Button
+                    android:id="@+id/finish"
+                    style="@style/materialButtonNormal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/home" />
+
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-</android.support.v4.widget.NestedScrollView>
+    </android.support.v4.widget.NestedScrollView>
+</LinearLayout>

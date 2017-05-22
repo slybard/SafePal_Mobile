@@ -14,7 +14,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.unfpa.safepal.report.WhoSGettingHelpFragment"
     android:background="@color/colorWhite"
-
+    android:animateLayoutChanges="true"
     >
         <TextView
             android:layout_marginTop="@dimen/intro_text_margin_top"
@@ -26,6 +26,7 @@
             android:layout_gravity="center_vertical|right"
             android:text="@string/wsgh_msgs_to_ecourage_survivor"
             android:textStyle="bold"
+
             />
 
 
@@ -48,7 +49,9 @@
             android:layout_centerVertical="true"
             android:layout_marginTop="20dp"
             android:background="@drawable/rect_shadow"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:animateLayoutChanges="true"
+            >
 
 
             <!--<RelativeLayout-->
@@ -71,7 +74,8 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="10dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:animateLayoutChanges="true">
 
 
                 <RadioButton
@@ -100,7 +104,8 @@
                 android:background="@drawable/spinner_bg"
                 android:onClick="onClickWsghIvSpinner"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="gone"
+                android:animateLayoutChanges="true">
 
                 <Spinner
                     android:id="@+id/wsgh_relationship_spinner"

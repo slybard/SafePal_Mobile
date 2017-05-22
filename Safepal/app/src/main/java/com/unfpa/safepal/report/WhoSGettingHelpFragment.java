@@ -20,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.unfpa.safepal.R;
+import com.unfpa.safepal.Utils.Layout;
 import com.unfpa.safepal.messages.EMessageDialogFragment;
 
 import java.util.Random;
@@ -120,23 +121,20 @@ public class WhoSGettingHelpFragment extends Fragment {
                 // Check which radio button was clicked
                 switch(view.getId()) {
                     case R.id.wsgh_yes_rb:
-                        if (checked)
-                            //startActivity(new Intent(getApplicationContext(), SurvivorIncidentFormActivity.class));
-                            // Pirates are the best
+                        if (checked){
                             wsghSpinnerRl.setVisibility(View.GONE);
-
-                        loadReportingFormSelfFragment();
-
-
-                        if(getActivity() instanceof ReportingActivity){
-                             ((ReportingActivity) getActivity()).updateNextButtonToSubmit();
+                            if(!Layout.isLandscape(getActivity().getBaseContext())){
+                                wsghEncouragingMessagesTv.setVisibility(View.VISIBLE);
+                            }
                         }
-
-
                         break;
                     case R.id.wsgh_someoneelse_rb:
-                        if (checked)
+                        if (checked){
+                            if(!Layout.isLandscape(getActivity().getBaseContext())){
+                                wsghEncouragingMessagesTv.setVisibility(View.GONE);
+                            }
                             wsghSpinnerRl.setVisibility(View.VISIBLE);
+                        }
                         break;
                 }
             }
@@ -151,18 +149,27 @@ public class WhoSGettingHelpFragment extends Fragment {
                 // Check which radio button was clicked
                 switch(view.getId()) {
                     case R.id.wsgh_yes_rb:
-                        if (checked)
-                            //startActivity(new Intent(getApplicationContext(), SurvivorIncidentFormActivity.class));
-                            // Pirates are the best
-                            wsghSpinnerRl.setVisibility(View.GONE);
-
-
+                        if (checked){
+                            //show the encouragement message since there is space
+                            if(!Layout.isLandscape(getActivity().getBaseContext())){
+                                wsghEncouragingMessagesTv.setVisibility(View.VISIBLE);
+                            }
+                            wsghSpinnerRl.setVisibility(View.GONE);//hide spinner
+                           }
                         break;
                     case R.id.wsgh_someoneelse_rb:
-                        if (checked)
+                        if (checked){
+                            //also hide the encouragement message to create more space
+                            if(!Layout.isLandscape(getActivity().getBaseContext())){
+                                wsghEncouragingMessagesTv.setVisibility(View.INVISIBLE);
+                            }
+                            //show spinner
                             wsghSpinnerRl.setVisibility(View.VISIBLE);
-                        break;
+                            break;
+                        }
+
                 }
+
             }
         });
         return rootView;

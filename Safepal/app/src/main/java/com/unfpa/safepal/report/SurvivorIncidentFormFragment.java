@@ -21,7 +21,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.unfpa.safepal.Location.UserLocation;
 import com.unfpa.safepal.R;
@@ -279,14 +278,13 @@ public class SurvivorIncidentFormFragment extends Fragment {
 
         }
 
-        Toast.makeText(context,"Lat: "+ Double.toString(userLatitude) +"Long: "+ Double.toString(userLongitude), Toast.LENGTH_LONG).show();
+        //Toast.makeText(context,"Lat: "+ Double.toString(userLatitude) +"Long: "+ Double.toString(userLongitude), Toast.LENGTH_LONG).show();
         int genderRBId = sifGenderRG.getCheckedRadioButtonId();
 
         //checks if gender radio group isn't selected;
         if(genderRBId==-1){
             //feedback to developer
-            sifFeedbackSnackbar = Snackbar.make(rootView ,"Tell us your gender please!!!",Snackbar.LENGTH_LONG);
-            sifFeedbackSnackbar.show();
+            Snackbar.make(rootView ,"Tell us your gender please!!!",Snackbar.LENGTH_LONG).show();
             return ReportingActivity.STATUS_SUBMIT_REPORT_ERROR;
         }
         View genderRBView = sifGenderRG.findViewById(genderRBId);
@@ -311,27 +309,23 @@ public class SurvivorIncidentFormFragment extends Fragment {
         //checks if the birth of date is picked
         //check if date is selected
         if(textViewChosenDate.getText().toString().length() <= 2){
-            sifFeedbackSnackbar = Snackbar.make(rootView,"Pick a date of birth",Snackbar.LENGTH_LONG);
-            sifFeedbackSnackbar.show();
+            Snackbar.make(rootView,"Pick a date of birth",Snackbar.LENGTH_LONG).show();
             return ReportingActivity.STATUS_SUBMIT_REPORT_ERROR;
         }
         //checks if the incident type is selected
         else if (sifIncidentTypeSpinner.getSelectedItemPosition() <= 0) {
-            sifFeedbackSnackbar = Snackbar.make(rootView,"Choose what happened to you.",Snackbar.LENGTH_LONG);
-            sifFeedbackSnackbar.show();
+            Snackbar.make(rootView,"Choose what happened to you.",Snackbar.LENGTH_LONG).show();
             return ReportingActivity.STATUS_SUBMIT_REPORT_ERROR;
         }
         //checks if the location of the incident is filled by the user
         if (sifIncidentLocationEt.length() == 0 ) {
-            sifFeedbackSnackbar = Snackbar.make(rootView, "In what location did the incident happen?", Snackbar.LENGTH_LONG);
-            sifFeedbackSnackbar.show();
+            Snackbar.make(rootView, "In what location did the incident happen?", Snackbar.LENGTH_LONG).show();
             textInputLayoutWhereHappened.setError(context.getString(R.string.cannotLeaveBlank));
             return ReportingActivity.STATUS_SUBMIT_REPORT_ERROR;
         }
         //checks if the a proper story is told by the survivor
-        if ( sifIncidentDetailsEt.length() == 0) {
-            sifFeedbackSnackbar = Snackbar.make(rootView, "Kindly narrate the story of the incident that happened.", Snackbar.LENGTH_LONG);
-            sifFeedbackSnackbar.show();
+        if ( sifIncidentDetailsEt.length() < 5) {
+            Snackbar.make(rootView, "Kindly narrate the story of the incident that happened.", Snackbar.LENGTH_LONG).show();
             textInputLayoutStory.setError(context.getString(R.string.cannotLeaveBlank));
             return ReportingActivity.STATUS_SUBMIT_REPORT_ERROR;
         }

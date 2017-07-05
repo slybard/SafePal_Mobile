@@ -1,14 +1,15 @@
 package com.unfpa.safepal.ProvideHelp;
 
 import android.Manifest;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -44,8 +45,8 @@ import java.util.List;
 import static com.unfpa.safepal.report.WhoSGettingHelpFragment.randMessageIndex;
 
 public class CsoActivity extends AppCompatActivity {
-
-    Toolbar csoToolbar;
+    //calling permission code
+    private static final int MAKE_CALL_PERMISSION_REQUEST_CODE = 1;
 
     /**
      * Next and buttonExit button
@@ -157,32 +158,28 @@ public class CsoActivity extends AppCompatActivity {
 
     public void onClickCsoCall(View view) {
 
-        try {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
+        if (checkPermission(Manifest.permission.CALL_PHONE)) {
+            String dial = "tel:116" ;
+            startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
+        } else {
+            //Toast.makeText(this, "Permission Call Phone denied", Toast.LENGTH_SHORT).show();
+            if (checkPermission(Manifest.permission.CALL_PHONE)) {
+                //dial.setEnabled(true);
+            } else {
+                //dial.setEnabled(false);
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, MAKE_CALL_PERMISSION_REQUEST_CODE);
             }
-            startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:116")));
-        } catch (ActivityNotFoundException ex) {
-            Toast.makeText(getApplicationContext(), "SafePal can't make call now", Toast.LENGTH_SHORT).show();
         }
     }
-
 
     // Method pushes the data to json server suing volley
     private void getNearestCSOs(String getLat, String getLong) {
 
 
-        beforeCsoList.add(new BeforeCsoInfo("Reproductive Health Uganda, Kamokya",0.3374639,32.58227210,"+256312207100"));
-        beforeCsoList.add(new BeforeCsoInfo("Naguru Teenage Center , Bugolobi",0.3209888,32.6172358,"0800112222"));
+        beforeCsoList.add(new BeforeCsoInfo("Reproductive Health Uganda, Kamokya",0.337464,32.582272,"+256312207100"));
+        beforeCsoList.add(new BeforeCsoInfo("Naguru Teenage Center , Bugolobi",0.320989,32.617236,"0800112222"));
         beforeCsoList.add(new BeforeCsoInfo("Fida, Kira Road",0.348204,32.596336,"+256414530848"));
-        beforeCsoList.add(new BeforeCsoInfo("Action Aid , Sir Apollo Rd",0.34204130858355,32.5625579059124,"00000000000"));
+        beforeCsoList.add(new BeforeCsoInfo("Action Aid , Sir Apollo Rd",0.342041,32.562558,"+256414510363"));
 
 
         for(int i =0 ; i<beforeCsoList.size(); i++){
@@ -313,7 +310,6 @@ public class CsoActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
     public void csoGuide(){
         ViewTarget eTarget = new ViewTarget(R.id.cso_childhelpline_btn, this);
         ShowcaseView homeExitSv = new ShowcaseView.Builder(this)
@@ -325,7 +321,6 @@ public class CsoActivity extends AppCompatActivity {
                 .build();
 
     }
-
 
     private double geographicalDistance(double lat1, double lon1, double lat2, double lon2) {
         double theta = lon1 - lon2;
@@ -348,6 +343,24 @@ public class CsoActivity extends AppCompatActivity {
         return (rad * 180.0 / Math.PI);
     }
 
+
+
+    //calling permission
+    private  boolean checkPermission(String permission) {
+        return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED;
+    }
+   //calling permission
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch(requestCode) {
+            case MAKE_CALL_PERMISSION_REQUEST_CODE :
+                if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                   // dial.setEnabled(true);
+                    Toast.makeText(this, "You can call the number by clicking on the button", Toast.LENGTH_SHORT).show();
+                }
+                return;
+        }
+    }
 
 
 }

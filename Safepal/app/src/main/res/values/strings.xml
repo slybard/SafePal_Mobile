@@ -194,7 +194,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="cannotLeaveBlank">Please kindly fill this field.</string>
+    <string name="cannotLeaveBlank">Kindly fill this field.</string>
     <string name="next_message">next</string>
     <string name="intro_encouraging_messages">Get familiar with important information by viewing the quick help information below. Press \'Next\' to show other information</string>
     <string name="home">Home</string>

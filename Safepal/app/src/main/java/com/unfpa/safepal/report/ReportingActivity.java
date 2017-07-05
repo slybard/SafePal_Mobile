@@ -96,7 +96,7 @@ ContactFragment.OnFragmentInteractionListener, AnotherPersonIncidentFormFragment
                             WhoSGettingHelpFragment.wsghFeedbackSnackbar = Snackbar.make(view, "what is your relationship to survivor?", Snackbar.LENGTH_LONG);
                             WhoSGettingHelpFragment.wsghFeedbackSnackbar.show();
                         }else {
-                            Log.d(TAG, "loading reporting fragment for happeed to someone else");
+                            //Log.d(TAG, "loading reporting fragment for happeed to someone else");
                             loadReportingFormSomeOneElseFragment();
                             updateNextButtonToSubmit();
                         }

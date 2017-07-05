@@ -114,7 +114,7 @@ public class WhoSGettingHelpFragment extends Fragment {
                 // Check which radio button was clicked
                 switch(view.getId()) {
                     case R.id.wsgh_yes_rb:
-                        if (checked)
+                        
                             //startActivity(new Intent(getApplicationContext(), SurvivorIncidentFormActivity.class));
                             // Pirates are the best
                             wsghSpinnerRl.setVisibility(View.GONE);

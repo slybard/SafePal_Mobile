@@ -23,7 +23,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+//import android.widget.Toast;
 
 import com.unfpa.safepal.Location.UserLocation;
 import com.unfpa.safepal.Places.GooglePlacesAutocompleteAdapter;
@@ -92,8 +92,8 @@ public class AnotherPersonIncidentFormFragment extends Fragment {
 
     //user location
     private  static UserLocation apifGPS;
-    private static  double userLatitude=0.334307;
-    private static double userLongitude=32.600917;
+    private static  double userLatitude=0.0;
+    private static double userLongitude=0.0;
 
 
 
@@ -204,7 +204,8 @@ public class AnotherPersonIncidentFormFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String str = (String) parent.getItemAtPosition(position);
-                Toast.makeText(rootView.getContext(), str, Toast.LENGTH_SHORT).show();
+                Snackbar.make(rootView ,str,
+                        Snackbar.LENGTH_SHORT).show();
             }
         });
 
@@ -254,7 +255,7 @@ public class AnotherPersonIncidentFormFragment extends Fragment {
                     //Generates random feed back to the user
                     String [] randFeedback = {"What is his/her age?", "Please select his/her age.", "How old is He/She?"};
                     Random rn = new Random();
-                    Toast.makeText(rootView.getContext(), randFeedback[rn.nextInt(randFeedback.length)], Toast.LENGTH_LONG).show();
+
                 }
             }
 
@@ -350,7 +351,7 @@ public class AnotherPersonIncidentFormFragment extends Fragment {
 
     static TextInputLayout textInputLayoutWhereHappened;
     static TextInputLayout textInputLayoutStory;
-    static Snackbar sifFeedbackSnackbar;
+    //static Snackbar sifFeedbackSnackbar;
     /**
      * true = successfull
      *
@@ -362,10 +363,23 @@ public class AnotherPersonIncidentFormFragment extends Fragment {
      * @return
      */
     public static int submitForm(Context context) {
+
+
+        //picks the location of the user
+        if(apifGPS.canGetLocation()){
+            if(apifGPS.getLatitude()!= 0.0 || apifGPS.getLongitude()!=0.0){
+                userLatitude= apifGPS.getLatitude();
+                userLongitude = apifGPS.getLongitude();
+            }
+        }
+
         int genderRBApifId = apifGenderRG.getCheckedRadioButtonId();
 
         if(genderRBApifId==-1){
-            Toast.makeText(context, "Select the survivors gender?",Toast.LENGTH_LONG).show();
+            Snackbar.make(rootView ,"Select the survivors gender?",
+                    Snackbar.LENGTH_LONG).show();
+
+            //Toast.makeText(context, "Select the survivors gender?",Toast.LENGTH_LONG).show();
             return ReportingActivity.STATUS_SUBMIT_REPORT_ERROR;
         }
 
@@ -375,45 +389,37 @@ public class AnotherPersonIncidentFormFragment extends Fragment {
 
         //checks if the location of the incident is filled by the user
         if (apifIncidentLocationEt.length() == 0 ) {
-
-            sifFeedbackSnackbar = Snackbar.make(rootView ,"In what location did the incident happen him/her?",
-                    Snackbar.LENGTH_LONG);
-            sifFeedbackSnackbar.show();
+            Snackbar.make(rootView ,"In what location did the incident happen him/her?",
+                    Snackbar.LENGTH_LONG).show();
             textInputLayoutWhereHappened.setError(context.getString(R.string.cannotLeaveBlank));
             return ReportingActivity.STATUS_SUBMIT_REPORT_ERROR;
         }
 
-        if (apifIncidentTypeSpinner.getSelectedItemPosition() <= 0) {
-//            if(idx==0) Toast.makeText(context, "Select the type of incident that happened to her.",Toast.LENGTH_LONG).show();
-//            else       Toast.makeText(context, "Select the type of incident happened to him.",Toast.LENGTH_LONG).show();
-            sifFeedbackSnackbar = Snackbar.make(rootView ,"Select the type of incident happened to him/her.",
-                    Snackbar.LENGTH_LONG);
-            sifFeedbackSnackbar.show();
+        if (apifIncidentTypeSpinner.getSelectedItemPosition() <= 0) {Snackbar.make(rootView ,"Select the type of incident happened to him/her.",
+                Snackbar.LENGTH_LONG).show();
             return ReportingActivity.STATUS_SUBMIT_REPORT_ERROR;
         }
         //age range check out
 
         if (spinnerAgeRange.getSelectedItemPosition() <= 0) {
-//            if(idx==0) Toast.makeText(context, "Select the type of incident that happened to her.",Toast.LENGTH_LONG).show();
-//            else       Toast.makeText(context, "Select the type of incident happened to him.",Toast.LENGTH_LONG).show();
-            sifFeedbackSnackbar = Snackbar.make(rootView ,"Please select his/her age.",
-                    Snackbar.LENGTH_LONG);
-            sifFeedbackSnackbar.show();
+            Snackbar.make(rootView ,"Please select his/her age.",
+                    Snackbar.LENGTH_LONG).show();
             return ReportingActivity.STATUS_SUBMIT_REPORT_ERROR;
         }
 
         //checks if the a proper story is told by the survivor
         if ( apifIncidentDetailsEt.length() == 0) {
-            sifFeedbackSnackbar = Snackbar.make(rootView ,"Kindly narrate the story of the incident that happened him/her",
-                    Snackbar.LENGTH_LONG);
-            sifFeedbackSnackbar.show();
+            Snackbar.make(rootView ,"Kindly narrate the story of the incident that happened him/her",
+                    Snackbar.LENGTH_LONG).show();
             textInputLayoutStory.setError(context.getString(R.string.cannotLeaveBlank));
             return ReportingActivity.STATUS_SUBMIT_REPORT_ERROR;
         }
 
 
         String apifReportedBy = relationshipToSurvivor;
-        Log.d(TAG, "Relation shiop to..: " + apifReportedBy );
+
+        Log.d(TAG, "Relationship to..: " + apifReportedBy );
+
         String apifSurvivorAge = (String)spinnerAgeRange.getSelectedItem();
         String apifSurvivorGender = (String)apifGenderRB.getText();
         String apifIncidentType =(String)apifIncidentTypeSpinner.getSelectedItem();
@@ -435,9 +441,6 @@ public class AnotherPersonIncidentFormFragment extends Fragment {
 
 
         values.put(ReportIncidentTable.COLUMN_REPORTER_LOCATION_LAT, Double.toString(userLatitude));
-       //Log.d("lat", Double.toString(apifGPS.getLatitude()));
-       // Log.d("lat", Double.toString(apifGPS.getLongitude()));
-       //  Toast.makeText(context, Double.toString(userLongitude)+ ":"+ Double.toString(userLatitude),Toast.LENGTH_LONG).show();
         values.put(ReportIncidentTable.COLUMN_REPORTER_LOCATION_LNG, Double.toString(userLongitude));
         values.put(ReportIncidentTable.COLUMN_REPORTER_PHONE_NUMBER, "null");
         values.put(ReportIncidentTable.COLUMN_REPORTER_EMAIL, "null");

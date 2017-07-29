@@ -14,7 +14,8 @@ import android.widget.Toast;
 public class NetworkChangeReceiver extends BroadcastReceiver{
 
     //Volley requests
-    final String URL_SAFEPAL_API = "https://api-safepal.herokuapp.com/index.php/api/v1/reports/addreport";
+//    final String URL_SAFEPAL_API = "https://api-safepal.herokuapp.com/index.php/api/v1/reports/addreport";
+    final String URL_SAFEPAL_API = " https://api.safepal.co/api/v1/reports/addreport";
     // Intent for starting the IntentService for submitting a survivor case
     private Intent mServiceIntent;
 

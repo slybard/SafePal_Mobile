@@ -420,7 +420,7 @@ public class AnotherPersonIncidentFormFragment extends Fragment {
 
         Log.d(TAG, "Relationship to..: " + apifReportedBy );
 
-        String apifSurvivorAge = (String)spinnerAgeRange.getSelectedItem();
+        String apifSurvivorAge = ((String)spinnerAgeRange.getSelectedItem()).substring(0,2);
         String apifSurvivorGender = (String)apifGenderRB.getText();
         String apifIncidentType =(String)apifIncidentTypeSpinner.getSelectedItem();
         String apifIncidentLocation = apifIncidentLocationEt.getText().toString();

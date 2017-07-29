@@ -23,8 +23,13 @@ import com.android.volley.toolbox.StringRequest;
 import com.unfpa.safepal.ProvideHelp.ContactFragment;
 import com.unfpa.safepal.ProvideHelp.CsoActivity;
 import com.unfpa.safepal.R;
+import com.unfpa.safepal.models.Contact;
+import com.unfpa.safepal.models.ContactResponse;
+import com.unfpa.safepal.models.TokenResponse;
 import com.unfpa.safepal.network.MySingleton;
 import com.unfpa.safepal.network.VolleyCallback;
+import com.unfpa.safepal.service.Constant;
+import com.unfpa.safepal.service.SafePalAPI;
 import com.unfpa.safepal.store.ReportIncidentContentProvider;
 import com.unfpa.safepal.store.ReportIncidentTable;
 
@@ -33,9 +38,20 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 public class ReportingActivity extends AppCompatActivity implements SurvivorIncidentFormFragment.OnFragmentInteractionListener,
 ContactFragment.OnFragmentInteractionListener, AnotherPersonIncidentFormFragment.OnFragmentInteractionListener{
-
+    private Retrofit retrofit;
+    private SafePalAPI safePalAPI;
     String TAG = ReportingActivity.class.getSimpleName();
     /**
      * Next and buttonExit button
@@ -60,6 +76,25 @@ ContactFragment.OnFragmentInteractionListener, AnotherPersonIncidentFormFragment
         manageUI();
 
         loadWhoGetnHelpFragment();
+
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+// set your desired log level
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(logging);  // <-- this is the important line!
+        httpClient.addInterceptor(chain -> {
+            okhttp3.Request originalRequest = chain.request();
+            okhttp3.Request.Builder builder = originalRequest.newBuilder().header("userid", Constant.USER_ID);
+            okhttp3.Request newRequest = builder.build();
+            return chain.proceed(newRequest);
+        }).build();
+
+        retrofit = new Retrofit.Builder().addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(httpClient.build())
+                .baseUrl(Constant.END_POINT).build();
+        safePalAPI = retrofit.create(SafePalAPI.class);
 
 
     }
@@ -302,8 +337,7 @@ ContactFragment.OnFragmentInteractionListener, AnotherPersonIncidentFormFragment
 
             updateContactToServer(
                     cursor.getString(cursor.getColumnIndex(ReportIncidentTable.COLUMN_UNIQUE_IDENTIFIER)),
-                    cursor.getString(cursor.getColumnIndex(ReportIncidentTable.COLUMN_REPORTER_PHONE_NUMBER)),
-                    updateContactUrl);
+                    cursor.getString(cursor.getColumnIndex(ReportIncidentTable.COLUMN_REPORTER_PHONE_NUMBER)));
 
         }
         cursor.close();
@@ -312,93 +346,127 @@ ContactFragment.OnFragmentInteractionListener, AnotherPersonIncidentFormFragment
     }
 
 
-    public  void updateContactToServer(final String toServerCasenumber, final String toServerContact, final String updateContactUrl){
-
-        getUpdateTokenFromServer(new VolleyCallback() {
+    public  void updateContactToServer(final String toServerCasenumber, final String toServerContact){
+        Observable<TokenResponse> resp = safePalAPI.getToken().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+        resp.subscribe(new Subscriber<TokenResponse>() {
             @Override
-            public void onSuccessResponse(String tokenResponse)  {
+            public void onCompleted() {
 
-                try{
-                    JSONObject tokenObject = new JSONObject(tokenResponse);
-                    final  String  serverReceivedToken = tokenObject.getString("token");
-                    // This volley request sends a report to the server with the received token
-                    StringRequest updateContactRequest = new StringRequest(Request.Method.POST, updateContactUrl,
-                            new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String updateContactReponse) {
-                                    Log.d("kkkkk", updateContactReponse);
-                                }
-                            },
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Log.d("Not Submitted", error.getMessage());
-                                }
-                            }){
+            }
 
-                        @Override
-                        protected Map<String, String> getParams() throws AuthFailureError {
-                            HashMap<String, String> updateContact = new HashMap<String, String>();
+            @Override
+            public void onError(Throwable e) {
 
-                            updateContact.put("token", serverReceivedToken);
-                            updateContact.put("caseNumber", toServerCasenumber);
-                            updateContact.put("contact",toServerContact);
-                            return updateContact;                        }
+            }
 
-                        @Override
-                        public Map<String, String> getHeaders() throws AuthFailureError {
-                            HashMap<String, String> updateContactHeaders = new HashMap<String, String>();
-                            updateContactHeaders.put("userid", "C7rPaEAN9NpPGR8e9wz9bzw");
-                            return  updateContactHeaders;
-                        }
+            @Override
+            public void onNext(TokenResponse tokenResponse) {
+                Observable<ContactResponse> resp = safePalAPI.addContact(new Contact(tokenResponse.getToken(),
+                        toServerCasenumber, toServerContact))
+                        .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+                resp.subscribe(new Subscriber<ContactResponse>() {
+                    @Override
+                    public void onCompleted() {
 
-                    };
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
 
-                    MySingleton.getInstance(getApplicationContext()).addToRequestQueue(updateContactRequest);
+                    }
 
-
-
-                }catch (Exception e){e.printStackTrace();}
+                    @Override
+                    public void onNext(ContactResponse contactResponse) {
+                        Log.d("CONTACT_UPDATED", contactResponse.getMessage());
+                    }
+                });
             }
         });
+//        getUpdateTokenFromServer(new VolleyCallback() {
+//            @Override
+//            public void onSuccessResponse(String tokenResponse)  {
+//
+//                try{
+//                    JSONObject tokenObject = new JSONObject(tokenResponse);
+//                    final  String  serverReceivedToken = tokenObject.getString("token");
+//                    // This volley request sends a report to the server with the received token
+//                    StringRequest updateContactRequest = new StringRequest(Request.Method.POST, updateContactUrl,
+//                            new Response.Listener<String>() {
+//                                @Override
+//                                public void onResponse(String updateContactReponse) {
+//                                    Log.d("kkkkk", updateContactReponse);
+//                                }
+//                            },
+//                            new Response.ErrorListener() {
+//                                @Override
+//                                public void onErrorResponse(VolleyError error) {
+//                                    Log.d("Not Submitted", error.getMessage());
+//                                }
+//                            }){
+//
+//                        @Override
+//                        protected Map<String, String> getParams() throws AuthFailureError {
+//                            HashMap<String, String> updateContact = new HashMap<String, String>();
+//
+//                            updateContact.put("token", serverReceivedToken);
+//                            updateContact.put("caseNumber", toServerCasenumber);
+//                            updateContact.put("contact",toServerContact);
+//                            return updateContact;                        }
+//
+//                        @Override
+//                        public Map<String, String> getHeaders() throws AuthFailureError {
+//                            HashMap<String, String> updateContactHeaders = new HashMap<String, String>();
+//                            updateContactHeaders.put("userid", "C7rPaEAN9NpPGR8e9wz9bzw");
+//                            return  updateContactHeaders;
+//                        }
+//
+//                    };
+//
+//
+//                    MySingleton.getInstance(getApplicationContext()).addToRequestQueue(updateContactRequest);
+//
+//
+//
+//                }catch (Exception e){e.printStackTrace();}
+//            }
+//        });
     }
 
-    //gets a new token from server
-    public void getUpdateTokenFromServer(final VolleyCallback tokenCallback) {
-
-
-        final String tokenUrl = " https://api-safepal.herokuapp.com/index.php/api/v1/auth/newtoken";
-
-        // This volley request gets a token from the server
-        StringRequest tokenRequest = new StringRequest(Request.Method.GET, tokenUrl,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String tokenResponse) {
-                        tokenCallback.onSuccessResponse(tokenResponse);
-
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("Failed to get token", error.getMessage());
-                    }
-                }){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("userid", "C7rPaEAN9NpPGR8e9wz9bzw");
-
-                return headers;
-            }
-        };
-        //add request to queue
-
-        MySingleton.getInstance(this).addToRequestQueue(tokenRequest);
-
-    }
+//    //gets a new token from server
+//    public void getUpdateTokenFromServer(final VolleyCallback tokenCallback) {
+//
+//
+//        final String tokenUrl = " https://api-safepal.herokuapp.com/index.php/api/v1/auth/newtoken";
+//
+//        // This volley request gets a token from the server
+//        StringRequest tokenRequest = new StringRequest(Request.Method.GET, tokenUrl,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String tokenResponse) {
+//                        tokenCallback.onSuccessResponse(tokenResponse);
+//
+//
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Log.d("Failed to get token", error.getMessage());
+//                    }
+//                }){
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                HashMap<String, String> headers = new HashMap<String, String>();
+//                headers.put("userid", "C7rPaEAN9NpPGR8e9wz9bzw");
+//
+//                return headers;
+//            }
+//        };
+//        //add request to queue
+//
+//        MySingleton.getInstance(this).addToRequestQueue(tokenRequest);
+//
+//    }
 
 
 

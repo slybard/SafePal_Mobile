@@ -57,7 +57,7 @@ public class DatePickerFragment extends DialogFragment
         //assign the date to the button
         TextView textViewChosenDate = (TextView)getActivity().findViewById(R.id.sif_chosen_date);
         textViewChosenDate.setVisibility(View.VISIBLE);
-        textViewChosenDate.setText((currentYear-year) + "  years ago" );
+        textViewChosenDate.setText((currentYear-year) + "  years ago");
       //  + " ( " + (currentYear-year) + " years)")
        // String.valueOf(day)+"-"+ getMonth(month+1)+"-"+ String.valueOf(year)
     }

@@ -183,28 +183,22 @@ public class SurvivorIncidentFormFragment extends Fragment {
         // Apply the sifIncidentTypeAdapter to the spinner
         sifIncidentTypeSpinner.setAdapter(sifIncidentTypeAdapter);
 
-        sifDateOfBirthButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                android.app.DialogFragment dateFragment = new DatePickerFragment();
+        sifDateOfBirthButton.setOnClickListener(view -> {
+            android.app.DialogFragment dateFragment = new DatePickerFragment();
 
 
-                dateFragment.show(getFragmentManager(), "datePicker");
-                sifDateOfBirthButton.setText("Change Date");
-                sifQtnAgeTextView.setText("You were born  ");
-            }
+            dateFragment.show(getFragmentManager(), "datePicker");
+            sifDateOfBirthButton.setText("Change Date");
+            sifQtnAgeTextView.setText("You were born  ");
         });
 
 
-        sifEncouragingMessagesTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EMessageDialogFragment emDialog = EMessageDialogFragment.newInstance(
-                        getString(R.string.not_your_fault_alert_header),
-                        sifEncouragingMessagesTv.getText().toString(),
-                        getString(R.string.close_dialog));
-                emDialog.show(getFragmentManager(), "encouraging message");
-            }
+        sifEncouragingMessagesTv.setOnClickListener(view -> {
+            EMessageDialogFragment emDialog = EMessageDialogFragment.newInstance(
+                    getString(R.string.not_your_fault_alert_header),
+                    sifEncouragingMessagesTv.getText().toString(),
+                    getString(R.string.close_dialog));
+            emDialog.show(getFragmentManager(), "encouraging message");
         });
 
 
@@ -296,10 +290,10 @@ public class SurvivorIncidentFormFragment extends Fragment {
 //        String survivorDateOfBirth = sifDateOfBirthButton.getText().toString();;
         String apifSurvivorDateOfBirth = textViewChosenDate.getText().toString();
         Log.d("age", apifSurvivorDateOfBirth);
-        String survivorGender = (String)sifGenderRB.getText();
+        String survivorGender = ((String)sifGenderRB.getText());
         String incidentType =(String)sifIncidentTypeSpinner.getSelectedItem();
         String incidentLocation = sifIncidentLocationEt.getText().toString();
-        String incidentStory = sifIncidentDetailsEt.getText().toString();;
+        String incidentStory = sifIncidentDetailsEt.getText().toString();
         String uniqueIdentifier = generateTempSafePalNumber(1000,9999);
 
 //
@@ -334,7 +328,7 @@ public class SurvivorIncidentFormFragment extends Fragment {
          * **/
         ContentValues values = new ContentValues();
         values.put(ReportIncidentTable.COLUMN_REPORTED_BY, reportedBy);
-        values.put(ReportIncidentTable.COLUMN_SURVIVOR_DATE_OF_BIRTH, apifSurvivorDateOfBirth);
+        values.put(ReportIncidentTable.COLUMN_SURVIVOR_DATE_OF_BIRTH, (apifSurvivorDateOfBirth).replace("  years ago", "").trim());
         values.put(ReportIncidentTable.COLUMN_SURVIVOR_GENDER, survivorGender);
         values.put(ReportIncidentTable.COLUMN_INCIDENT_TYPE, incidentType);
         values.put(ReportIncidentTable.COLUMN_INCIDENT_LOCATION, incidentLocation);
